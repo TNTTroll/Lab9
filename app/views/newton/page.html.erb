@@ -1,0 +1,47 @@
+<script>
+    my_url = location.protocol + "//" + location.host + "/newton/page.json"
+    function send_query() {
+        var frm = document.forms.number_form;
+        var params_num = "?num=" + frm.num.value;
+        if (params_num == "?num=") return false;
+
+        var my_JSON_object = {};
+        var http_request = new XMLHttpRequest();
+        console.log(my_url + params_num);
+        http_request.open("GET", my_url + params_num, true);
+        http_request.onreadystatechange = function() {
+            if (http_request.readyState == 4 && http_request.status == 200) {
+                my_JSON_object = JSON.parse(http_request.responseText);
+                show_result(my_JSON_object);
+            }
+        };
+
+        http_request.send(null);
+        return false;
+    }
+
+    function show_result(data) {
+        let number = document.getElementById('input_number');
+        let result = document.getElementById('input_answer');
+
+
+
+        number.innerHTML = "Input number: " + document.getElementById('num').value;
+        result.innerHTML = "Answer: " + data.value;
+    }
+
+</script>
+
+<div class="plate">
+  <h1>Newton - Rafson</h1>
+
+  <form onsubmit="return send_query();" name="number_form">
+    <div>
+      <input type="number" name='num' id='num' placeholder="Enter your number">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <p id="input_number"> </p>
+  <p id="input_answer"></p>
+</div>
